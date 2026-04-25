@@ -1,12 +1,12 @@
-GET https://agh-mwo-enroller-gvyv.onrender.com/
+GET https://agh-mwo-enroller-gvyv.onrender.com/meetings/
 Accept: application/json
 
 ###
-GET https://agh-mwo-enroller-gvyv.onrender.com/2
+GET https://agh-mwo-enroller-gvyv.onrender.com/meetings/2
 Accept: application/json
 
 ###
-GET https://agh-mwo-enroller-gvyv.onrender.com/user1231
+GET https://agh-mwo-enroller-gvyv.onrender.com/meetings/user1231
 Accept: application/json
 
 ###
@@ -76,4 +76,12 @@ Accept: application/json
 
 ###
 GET https://agh-mwo-enroller-gvyv.onrender.com/meetings?key=some123123
+Accept: application/json
+
+###
+GET https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants
+Accept: application/json
+
+###
+GET https://localhost:8080/meetings/2/participants
 Accept: application/json

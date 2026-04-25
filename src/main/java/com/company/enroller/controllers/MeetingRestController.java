@@ -1,7 +1,9 @@
 package com.company.enroller.controllers;
 
 import com.company.enroller.model.Meeting;
+import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.MeetingService;
+import com.company.enroller.persistence.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ public class MeetingRestController {
 
     @Autowired
     MeetingService meetingService;
+
+    @Autowired
+    ParticipantService participantService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<?> getMeetings(
@@ -47,6 +52,40 @@ public class MeetingRestController {
         }
         return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<?> getParticipants(@PathVariable("id") long id){
+        Meeting meeting = meetingService.findById(id);
+        if (meeting == null) {
+            return new ResponseEntity<>(
+                    "Nie ma takiego spotkania",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        Collection<Participant> participants = meeting.getParticipants();
+        if (participants.isEmpty()) {
+            return new ResponseEntity<>(
+                    "Spotkanie: " + meeting.getTitle()
+                    + " nie ma przypisanych uczestników: ",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+
+    }
+
+//    @PostMapping("/{id}/participants")
+//    public ResponseEntity<?> getParticipants(@PathVariable("id") long id){
+//
+//    }
+//
+//    @DeleteMapping("/{id}/participants/{login}")
+//    public ResponseEntity<?> deleteParticipants(@PathVariable("id") long id,
+//                                                @PathVariable("login") String login){
+//
+//    }
+
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> registerNewMeeting(@RequestBody Meeting meeting) {

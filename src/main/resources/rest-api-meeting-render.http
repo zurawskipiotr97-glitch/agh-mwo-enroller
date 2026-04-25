@@ -92,5 +92,5 @@ Content-Type: application/json
 
 
 ###
-DELETE https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants/user5
-Accept: application/json
+DELETE https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants/user3
+Content-Type: application/json

@@ -136,13 +136,10 @@ public class MeetingRestController {
         meetingService.updateMeeting(meeting);
 
         return new ResponseEntity<>("Użytkownik: " + deletedParticipant.getLogin()
-                + " został dodany do spotkania",
+                + " został usunięty ze spotkania",
                 HttpStatus.OK
         );
-
-
     }
-
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> registerNewMeeting(@RequestBody Meeting meeting) {
@@ -151,7 +148,6 @@ public class MeetingRestController {
                     "Meeting: " + meeting.getTitle() + " added successfully",
                     HttpStatus.CREATED
             );
-
     }
 
     @DeleteMapping("")

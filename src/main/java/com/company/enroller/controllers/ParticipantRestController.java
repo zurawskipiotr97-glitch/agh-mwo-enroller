@@ -18,10 +18,28 @@ public class ParticipantRestController {
     ParticipantService participantService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<?> getParticipants() {
-        Collection<Participant> participants = participantService.getAll();
+    public ResponseEntity<?> getParticipants(
+            @RequestParam(value = "sortBy", defaultValue = "login") String sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = "ASC") String sortOrder,
+            @RequestParam(defaultValue = "%") String key
+    ) {
+        if (!participantService.isFieldValid(sortBy)) {
+            return new ResponseEntity<>("Błąd: Pole '" + sortBy + "' nie istnieje!", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) {
+            sortOrder = "ASC";
+        }
+
+        String searchKey = (key == null) ? "" : key;
+
+        Collection<Participant> participants = participantService.getAll(sortBy, sortOrder, key);
+        if (participants.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Brak wyników dla: " + searchKey);
+        }
         return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getParticipant(@PathVariable("id") String login) {

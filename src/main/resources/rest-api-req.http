@@ -84,3 +84,35 @@ Accept: application/json
 <> 2026-04-25T110338-1.200.json
 <> 2026-04-25T110335-2.200.json
 <> 2026-04-25T105720-2.200.json
+
+###
+GET http://localhost:8080/participants?sortBy=login&sortOrder=DESC
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?sortBy=login&sortOrder=ASC
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?sortBy=login
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?sortBy=logwn
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?sortBy=login&sortOrder=ASCawd
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?key=some
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?key=us
+Accept: application/json
+
+###
+GET http://localhost:8080/participants?key=some123123
+Accept: application/json

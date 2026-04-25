@@ -17,10 +17,21 @@ public class ParticipantService {
 		connector = DatabaseConnector.getInstance();
 	}
 
-	public Collection<Participant> getAll() {
-		String hql = "FROM Participant";
-		Query query = connector.getSession().createQuery(hql);
-		return query.list();
+
+    public Collection<Participant> getAll() {
+        String hql = "FROM Participant";
+        Query query = connector.getSession().createQuery(hql);
+        return query.list();
+    }
+	public Collection<Participant> getAll(String sortBy, String sortOrder, String key) {
+        String finalKey = (key == null || key.isEmpty()) ? "%" : "%" + key + "%";
+
+        String hql = "FROM Participant WHERE lower(login) LIKE lower(:flogin) " +
+                "ORDER BY " + sortBy + " " + sortOrder;
+
+        Query query = connector.getSession().createQuery(hql);
+        query.setParameter("flogin", finalKey);
+        return query.list();
 	}
 
     public Participant findByLogin(String login) {
@@ -43,6 +54,15 @@ public class ParticipantService {
         Transaction transaction = connector.getSession().beginTransaction();
         connector.getSession().delete(participant);
         transaction.commit();
+    }
+
+    public boolean isFieldValid(String fieldName) {
+        try {
+            connector.getSession().getMetamodel().entity(Participant.class).getAttribute(fieldName);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
 }

@@ -51,10 +51,17 @@ public class ParticipantRestController {
             );
             }
 
-//    @DeleteMapping("")
-//    public ResponseEntity<?> deleteParticipant(@RequestBody Participant participant) {
-//
-//    }
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteParticipant(@RequestBody Participant participant) {
+        Participant existingParticipant = participantService.findByLogin(participant.getLogin());
+
+        if (existingParticipant != null) {
+            participantService.deleteParticipant(existingParticipant);
+            return new ResponseEntity<>("Użytkownik został usunięty", HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>("Nie było takiego użytkownika", HttpStatus.NOT_FOUND);
+    }
 
     @PutMapping("")
     public ResponseEntity<?> updateParticipant(@RequestBody Participant participant) {
@@ -66,6 +73,6 @@ public class ParticipantRestController {
             );
         }
         participantService.updateParticipant(participant);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Użytkownik został zaktualizowany", HttpStatus.ACCEPTED);
     }
 }

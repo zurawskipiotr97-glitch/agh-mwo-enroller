@@ -1,0 +1,85 @@
+package com.company.enroller.controllers;
+
+import com.company.enroller.model.Meeting;
+import com.company.enroller.persistence.MeetingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+
+@RestController
+@RequestMapping("/meetings")
+public class MeetingRestController {
+
+    @Autowired
+    MeetingService meetingService;
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<?> getMeetings(
+            @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = "ASC") String sortOrder,
+            @RequestParam(defaultValue = "%") String key
+    ) {
+        if (!meetingService.isFieldValid(sortBy)) {
+            return new ResponseEntity<>("Błąd: Pole '" + sortBy + "' nie istnieje!", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) {
+            sortOrder = "ASC";
+        }
+
+        String searchKey = (key == null) ? "" : key;
+
+        Collection<Meeting> meetings = meetingService.getAll(sortBy, sortOrder, searchKey);
+        if (meetings.isEmpty()) {
+            return new ResponseEntity<>("Brak wyników dla: " + searchKey, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getMeeting(@PathVariable("id") long id){
+       Meeting meeting = meetingService.findById(id);
+        if (meeting == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<?> registerNewMeeting(@RequestBody Meeting meeting) {
+            meetingService.addMeeting(meeting);
+            return new ResponseEntity<>(
+                    "Meeting: " + meeting.getTitle() + " added successfully",
+                    HttpStatus.CREATED
+            );
+
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteMeeting(@RequestBody Meeting meeting) {
+        Meeting existingMeeting = meetingService.findById(meeting.getId());
+
+        if (existingMeeting != null) {
+            meetingService.deleteMeeting(existingMeeting);
+            return new ResponseEntity<>("Spotkanie zostało usunięte", HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>("Nie było takiego spotkania", HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<?> updateMeeting(@RequestBody Meeting meeting) {
+        Meeting existingMeeting = meetingService.findById(meeting.getId());
+        if (existingMeeting == null) {
+            return new ResponseEntity<>(
+                    "Nie znaleziono spotkania do aktualizacji",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        meetingService.updateMeeting(meeting);
+        return new ResponseEntity<>("Spotkanie zostało zaktualizowane", HttpStatus.ACCEPTED);
+    }
+}

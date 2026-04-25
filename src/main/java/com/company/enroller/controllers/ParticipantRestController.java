@@ -11,7 +11,7 @@ import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.ParticipantService;
 
 @RestController
-@RequestMapping("/participants")
+@RequestMapping("/participants]")
 public class ParticipantRestController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class ParticipantRestController {
 
         Collection<Participant> participants = participantService.getAll(sortBy, sortOrder, key);
         if (participants.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Brak wyników dla: " + searchKey);
+            return new ResponseEntity<>("Brak wyników dla: " + searchKey, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
     }

@@ -46,6 +46,26 @@ public class ParticipantRestController {
 
             return new ResponseEntity<>(
                     "Unable to create. A participant with login " + participant.getLogin()
-                    + " already exist.", HttpStatus.CONFLICT);
+                    + " already exist.",
+                    HttpStatus.CONFLICT
+            );
             }
+
+//    @DeleteMapping("")
+//    public ResponseEntity<?> deleteParticipant(@RequestBody Participant participant) {
+//
+//    }
+
+    @PutMapping("")
+    public ResponseEntity<?> updateParticipant(@RequestBody Participant participant) {
+        Participant existingParticipant = participantService.findByLogin(participant.getLogin());
+        if (existingParticipant == null) {
+            return new ResponseEntity<>(
+                    "Nie znaleziono użytkownika do aktualizacji",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        participantService.updateParticipant(participant);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 }

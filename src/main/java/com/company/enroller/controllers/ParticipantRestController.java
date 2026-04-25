@@ -11,7 +11,7 @@ import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.ParticipantService;
 
 @RestController
-@RequestMapping("/participants]")
+@RequestMapping("/participants")
 public class ParticipantRestController {
 
     @Autowired

@@ -89,3 +89,21 @@ Accept: application/json
 ###
 GET http://localhost:8080/meetings?key=some123123
 Accept: application/json
+
+###
+GET https://localhost:8080/meetings/2/participants
+Accept: application/json
+
+
+###
+POST https://localhost:8080/meetings/2/participants
+Content-Type: application/json
+
+{
+  "login": "user5"
+}
+
+
+###
+DELETE https://localhost:8080//meetings/2/participants/user3
+Accept: application/json

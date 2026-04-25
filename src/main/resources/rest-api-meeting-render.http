@@ -83,5 +83,14 @@ GET https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants
 Accept: application/json
 
 ###
-GET https://localhost:8080/meetings/2/participants
+POST https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants
+Content-Type: application/json
+
+{
+    "login": "user5"
+}
+
+
+###
+DELETE https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants/user5
 Accept: application/json

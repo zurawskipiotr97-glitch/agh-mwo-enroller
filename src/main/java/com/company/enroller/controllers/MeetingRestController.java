@@ -72,19 +72,76 @@ public class MeetingRestController {
             );
         }
         return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
-
     }
 
-//    @PostMapping("/{id}/participants")
-//    public ResponseEntity<?> getParticipants(@PathVariable("id") long id){
-//
-//    }
-//
-//    @DeleteMapping("/{id}/participants/{login}")
-//    public ResponseEntity<?> deleteParticipants(@PathVariable("id") long id,
-//                                                @PathVariable("login") String login){
-//
-//    }
+    @PostMapping("/{id}/participants")
+    public ResponseEntity<?> addParticipants(
+            @PathVariable("id") long id,
+            @RequestBody Participant participantData
+    ){
+        Meeting meeting = meetingService.findById(id);
+        if (meeting == null) {
+            return new ResponseEntity<>(
+                    "Nie ma takiego spotkania",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        String login = participantData.getLogin();
+        Participant participant = participantService.findByLogin(login);
+        if (participant == null) {
+            return new ResponseEntity<>(
+                    "Uczestnik o loginie "
+                    + login + " nie jest zarejestrowany w systemie.",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        if (meeting.getParticipants().contains(participant)) {
+            return new ResponseEntity<>(
+                    "Użytkownik już jest dodany do spotkania",
+                    HttpStatus.CONFLICT
+            );
+        }
+        meeting.addParticipant(participant);
+        meetingService.updateMeeting(meeting);
+
+        return new ResponseEntity<>("Użytkownik: " + participant.getLogin()
+                + " został dodany do spotkania",
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/{id}/participants/{login}")
+    public ResponseEntity<?> deleteParticipant(@PathVariable("id") long id,
+                                                @PathVariable("login") String login){
+        Meeting meeting = meetingService.findById(id);
+        if (meeting == null) {
+            return new ResponseEntity<>(
+                    "Nie ma takiego spotkania",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        Participant deletedParticipant = participantService.findByLogin(login);
+
+        if (deletedParticipant == null ||!meeting.getParticipants().contains(deletedParticipant)) {
+            return new ResponseEntity<>(
+                    "Użytkownik nie był dodany do spotkania",
+                    HttpStatus.CONFLICT
+            );
+        }
+
+        meeting.removeParticipant(deletedParticipant);
+        meetingService.updateMeeting(meeting);
+
+        return new ResponseEntity<>("Użytkownik: " + deletedParticipant.getLogin()
+                + " został dodany do spotkania",
+                HttpStatus.OK
+        );
+
+
+    }
 
 
     @RequestMapping(value = "", method = RequestMethod.POST)

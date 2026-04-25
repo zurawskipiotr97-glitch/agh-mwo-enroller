@@ -22,4 +22,11 @@ public class ParticipantService {
 		return query.list();
 	}
 
+    public Participant findByLogin(String id) {
+        String hql = "FROM Participant p WHERE p.login = :login";
+        Query query = connector.getSession().createQuery(hql);
+        query.setParameter("login", id);
+        return (Participant) query.uniqueResult();
+    }
+
 }

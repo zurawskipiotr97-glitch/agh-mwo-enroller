@@ -14,7 +14,7 @@ POST http://localhost:8080/meetings/
 Content-Type: application/json
 
 {
-  "id":23,
+  "id": 0,
   "title":"some title2",
   "description":"some description2",
   "date":"some date2"

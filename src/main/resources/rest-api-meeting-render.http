@@ -87,10 +87,10 @@ POST https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants
 Content-Type: application/json
 
 {
-    "login": "user5"
+    "login": "user3"
 }
 
 
 ###
-DELETE https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants/user3
+DELETE https://agh-mwo-enroller-gvyv.onrender.com/meetings/2/participants/user5
 Content-Type: application/json

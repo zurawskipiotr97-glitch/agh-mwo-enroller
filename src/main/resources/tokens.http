@@ -1,0 +1,8 @@
+###
+POST http://localhost:8080/tokens
+Content-Type: application/json
+
+{
+  "login": "somelogin",
+  "password": "some password"
+}

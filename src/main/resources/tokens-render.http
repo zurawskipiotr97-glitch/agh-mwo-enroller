@@ -1,5 +1,5 @@
 ###
-POST https://agh-mwo-enroller-gvyv.onrender.com/tokens
+POST http://localhost:8080/tokens
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://agh-mwo-enroller-gvyv.onrender.com/participants
+POST http://localhost:8080/participants
 Content-Type: application/json
 
 {
@@ -16,15 +16,6 @@ Content-Type: application/json
   "password": "testuser"
 }
 
-###
-POST https://agh-mwo-enroller-gvyv.onrender.com/participants
-Content-Type: application/json
-
-{
-  "login": "testuser2",
-  "password": "testuser2"
-}
-
 ### Authorization by token
-GET https://agh-mwo-enroller-gvyv.onrender.com/meetings
+GET http://localhost:8080/meetings
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL215ZW5yb2xsZXJkZW1vIiwic3ViIjoic29tZWxvZ2luIiwiaWF0IjoxNzc4NzA2OTkzLCJleHAiOjE3Nzg3MTA1OTMsInJvbGUiOiJwYXJ0aWNpcGFudCJ9.wtc5W8XiogB6u9_zwIjPG-s0e6_8jbWFxZmoPJhD8Ds

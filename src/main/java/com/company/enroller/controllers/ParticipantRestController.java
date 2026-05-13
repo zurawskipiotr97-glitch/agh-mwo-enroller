@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.company.enroller.model.Participant;
@@ -16,6 +17,9 @@ public class ParticipantRestController {
 
     @Autowired
     ParticipantService participantService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<?> getParticipants(
@@ -55,6 +59,9 @@ public class ParticipantRestController {
         Participant existingParticipant = participantService.findByLogin(participant.getLogin());
 
             if (existingParticipant == null) {
+
+                String hashedPassword = passwordEncoder.encode(participant.getPassword());
+                participant.setPassword(hashedPassword);
                 participantService.addParticipant(participant);
                 return new ResponseEntity<>(
                         "User: " + participant.getLogin() + " registered successfully",
